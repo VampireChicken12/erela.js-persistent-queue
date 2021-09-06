@@ -86,21 +86,21 @@ export class persistentQueue extends Plugin {
         );
       });
     // @ts-ignore
-    this.client.once("musicstarted", async (client) => {
+    (async () => {
       await this.delay(this.options.delay ?? 2000);
-        
+
       const database = (await this.Db.collection("persistentQueue")
         .find({})
         .toArray()) as any[];
-       
+
       database.forEach((db) => {
         if (
           !db.voiceChannel ||
           !db.textChannel ||
           !db.id ||
           !db.current ||
-          !client.channels.cache.get(db.voiceChannel) ||
-          !client.channels.cache.get(db.textChannel)
+          !this.client.channels.cache.get(db.voiceChannel) ||
+          !this.client.channels.cache.get(db.textChannel)
         )
           return;
         const player = this.manager.create({
@@ -117,7 +117,7 @@ export class persistentQueue extends Plugin {
                 author: db.current.author,
                 duration: db.current.duration,
               },
-              new User(client, db.current.requester)
+              new User(this.client, db.current.requester)
             )
           );
         for (let track of db.queue) {
@@ -128,7 +128,7 @@ export class persistentQueue extends Plugin {
                 author: track.author,
                 duration: track.duration,
               },
-              new User(client, db.current.requester)
+              new User(this.client, db.current.requester)
             )
           );
         }
@@ -137,12 +137,12 @@ export class persistentQueue extends Plugin {
         player.play(
           TrackUtils.buildUnresolved(
             player.queue.current!,
-            new User(client, db.current.requester)
+            new User(this.client, db.current.requester)
           ),
           { startTime: db.position ?? 0 }
         );
       });
-    });
+    })();
   }
   public delay(delayInms: number) {
     return new Promise((resolve) => {
