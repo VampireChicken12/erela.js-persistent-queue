@@ -135,7 +135,7 @@ export class persistentQueue extends Plugin {
         if (db.trackRepeat) player.setTrackRepeat(true);
         if (db.queueRepeat) player.setQueueRepeat(true);
         if(Object.keys(db.filters).length > 0){
-          player.setFilters("filters", db.filters)
+          player.setFilter("filters", db.filters)
         }
         player.play(
           TrackUtils.buildUnresolved(
