@@ -48,6 +48,7 @@ export class persistentQueue extends Plugin {
                   current: player.queue.current,
                   queueRepeat: player.queueRepeat,
                   trackRepeat: player.trackRepeat,
+                  filters: player.filters,
                   textChannel: player.textChannel,
                   voiceChannel: player.voiceChannel,
                   voiceState: player.voiceState,
