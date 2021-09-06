@@ -92,8 +92,9 @@ export class persistentQueue extends Plugin {
       const database = (await this.Db.collection("persistentQueue")
         .find({})
         .toArray()) as any[];
-
+      console.log(database);
       database.forEach((db) => {
+        console.log(db);
         if (
           !db.voiceChannel ||
           !db.textChannel ||
