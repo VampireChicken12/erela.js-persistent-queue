@@ -35,7 +35,6 @@ export class persistentQueue extends Plugin {
     this.manager
       .on("nodeRaw", (payload: any) => {
         if (payload.op === "playerUpdate") {
-          delete payload.op;
           const player = this.manager.players.get(payload.guildId);
           if (player) {
             const collection = this.Db.collection("persistentQueue");
