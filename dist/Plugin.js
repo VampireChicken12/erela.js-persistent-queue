@@ -83,10 +83,8 @@ class persistentQueue extends erela_js_1.Plugin {
             const database = (yield this.Db.collection("persistentQueue")
                 .find({})
                 .toArray());
-            console.log(database);
             database.forEach((db) => {
                 var _a;
-                console.log(db);
                 if (!db.voiceChannel ||
                     !db.textChannel ||
                     !db.id ||
@@ -117,6 +115,9 @@ class persistentQueue extends erela_js_1.Plugin {
                     player.setTrackRepeat(true);
                 if (db.queueRepeat)
                     player.setQueueRepeat(true);
+                if (Object.keys(db.filters).length > 0) {
+                    player.setFilters("filters", db.filters);
+                }
                 player.play(erela_js_1.TrackUtils.buildUnresolved(player.queue.current, new discord_js_1.User(this.client, db.current.requester)), { startTime: (_a = db.position) !== null && _a !== void 0 ? _a : 0 });
             });
         }))();
