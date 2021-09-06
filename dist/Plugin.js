@@ -77,20 +77,22 @@ class persistentQueue extends erela_js_1.Plugin {
             });
         });
         // @ts-ignore
-        this.client.once("ready", (client) => __awaiter(this, void 0, void 0, function* () {
+        (() => __awaiter(this, void 0, void 0, function* () {
             var _a;
             yield this.delay((_a = this.options.delay) !== null && _a !== void 0 ? _a : 2000);
             const database = (yield this.Db.collection("persistentQueue")
                 .find({})
                 .toArray());
+            console.log(database);
             database.forEach((db) => {
                 var _a;
+                console.log(db);
                 if (!db.voiceChannel ||
                     !db.textChannel ||
                     !db.id ||
                     !db.current ||
-                    !client.channels.cache.get(db.voiceChannel) ||
-                    !client.channels.cache.get(db.textChannel))
+                    !this.client.channels.cache.get(db.voiceChannel) ||
+                    !this.client.channels.cache.get(db.textChannel))
                     return;
                 const player = this.manager.create({
                     voiceChannel: db.voiceChannel,
@@ -103,21 +105,21 @@ class persistentQueue extends erela_js_1.Plugin {
                         title: db.current.title,
                         author: db.current.author,
                         duration: db.current.duration,
-                    }, new discord_js_1.User(client, db.current.requester)));
+                    }, new discord_js_1.User(this.client, db.current.requester)));
                 for (let track of db.queue) {
                     player.queue.add(erela_js_1.TrackUtils.buildUnresolved({
                         title: track.title,
                         author: track.author,
                         duration: track.duration,
-                    }, new discord_js_1.User(client, db.current.requester)));
+                    }, new discord_js_1.User(this.client, db.current.requester)));
                 }
                 if (db.trackRepeat)
                     player.setTrackRepeat(true);
                 if (db.queueRepeat)
                     player.setQueueRepeat(true);
-                player.play(erela_js_1.TrackUtils.buildUnresolved(player.queue.current, new discord_js_1.User(client, db.current.requester)), { startTime: (_a = db.position) !== null && _a !== void 0 ? _a : 0 });
+                player.play(erela_js_1.TrackUtils.buildUnresolved(player.queue.current, new discord_js_1.User(this.client, db.current.requester)), { startTime: (_a = db.position) !== null && _a !== void 0 ? _a : 0 });
             });
-        }));
+        }))();
     }
     delay(delayInms) {
         return new Promise((resolve) => {
