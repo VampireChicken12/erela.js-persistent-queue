@@ -8,7 +8,11 @@
   ],
   "scripts": {
     "build": "tsc",
-    "publish:stable": "yarn build && yarn publish --access=public"
+    "lint": "eslint --ext .ts ./src",
+    "types": "dts-bundle --removeSource --name erela.js --main ./dist --out ../typings/index.d.ts --baseDir ./dist",
+    "docs": "typedoc --json ./docs.json --mode file --excludeProtected --excludePrivate --excludeExternals src/structures",
+    "publish:stable": "yarn build && yarn types && yarn publish --access=public",
+    "publish:beta": "yarn build && yarn types && yarn publish --tag beta --access=public"
   },
   "keywords": [
     "erela.js",
@@ -19,6 +23,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^16.7.10",
+    "dts-bundle": "^0.7.3",
+    "eslint": "^7.32.0",
+    "typedoc": "^0.21.9",
+    "typedoc-plugin-no-inherit": "^1.3.0",
     "typescript": "^4.0.2"
   },
   "dependencies": {
