@@ -45,6 +45,7 @@ class persistentQueue extends erela_js_1.Plugin {
                             current: player.queue.current,
                             queueRepeat: player.queueRepeat,
                             trackRepeat: player.trackRepeat,
+                            filters: player.filters,
                             textChannel: player.textChannel,
                             voiceChannel: player.voiceChannel,
                             voiceState: player.voiceState,
