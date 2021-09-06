@@ -92,9 +92,7 @@ export class persistentQueue extends Plugin {
       const database = (await this.Db.collection("persistentQueue")
         .find({})
         .toArray()) as any[];
-      console.log(database);
       database.forEach((db) => {
-        console.log(db);
         if (
           !db.voiceChannel ||
           !db.textChannel ||
@@ -135,6 +133,9 @@ export class persistentQueue extends Plugin {
         }
         if (db.trackRepeat) player.setTrackRepeat(true);
         if (db.queueRepeat) player.setQueueRepeat(true);
+        if(Object.keys(db.filters).length > 0){
+          player.setFilters("filters", db.filters)
+        }
         player.play(
           TrackUtils.buildUnresolved(
             player.queue.current!,
