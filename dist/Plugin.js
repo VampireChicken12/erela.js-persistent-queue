@@ -34,7 +34,6 @@ class persistentQueue extends erela_js_1.Plugin {
         this.manager
             .on("nodeRaw", (payload) => {
             if (payload.op === "playerUpdate") {
-                delete payload.op;
                 const player = this.manager.players.get(payload.guildId);
                 if (player) {
                     const collection = this.Db.collection("persistentQueue");
