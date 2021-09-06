@@ -1,0 +1,28 @@
+{
+  "name": "erela.js-persistent-queue",
+  "version": "1.2.0",
+  "description": "Persistent queue plugin for Erela.JS",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "publish:stable": "yarn build && yarn publish --access=public"
+  },
+  "keywords": [
+    "erela.js",
+    "spotify",
+    "plugin"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^16.7.10",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "erela.js": "github:VampireChicken12/erela.js-filters#build"
+  }
+}
