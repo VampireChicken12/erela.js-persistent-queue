@@ -117,7 +117,7 @@ class persistentQueue extends erela_js_1.Plugin {
                 if (db.queueRepeat)
                     player.setQueueRepeat(true);
                 if (Object.keys(db.filters).length > 0) {
-                    player.setFilters("filters", db.filters);
+                    player.setFilter("filters", db.filters);
                 }
                 player.play(erela_js_1.TrackUtils.buildUnresolved(player.queue.current, new discord_js_1.User(this.client, db.current.requester)), { startTime: (_a = db.position) !== null && _a !== void 0 ? _a : 0 });
             });
