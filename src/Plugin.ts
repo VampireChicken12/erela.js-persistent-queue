@@ -86,12 +86,13 @@ export class persistentQueue extends Plugin {
         );
       });
     // @ts-ignore
-    this.client.once("ready", async (client) => {
+    this.client.once("musicstarted", async (client) => {
       await this.delay(this.options.delay ?? 2000);
-
+        
       const database = (await this.Db.collection("persistentQueue")
         .find({})
         .toArray()) as any[];
+       
       database.forEach((db) => {
         if (
           !db.voiceChannel ||
