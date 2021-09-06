@@ -2,7 +2,7 @@
   "name": "erela.js-persistent-queue",
   "version": "1.2.0",
   "description": "Persistent queue plugin for Erela.JS",
-  "main": "/dist/index.js",
+  "main": "dist",
   "files": [
     "dist"
   ],
