@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "erela.js": "github:VampireChicken12/erela.js-filters#build"
+    "discord.js": "^12.5.1",
+    "erela.js": "github:VampireChicken12/erela.js-filters#build",
+    "mongodb": "^4.1.1"
   }
 }

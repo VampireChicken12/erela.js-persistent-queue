@@ -18,7 +18,7 @@ const check = (options) => {
         throw new TypeError("PluginOptions must not be empty.");
     }
     if (typeof options.mongoDbUrl !== "string") {
-        throw new TypeError("Plugin option \"mongoDbUrl\" must be present and be a non-empty string.");
+        throw new TypeError('Plugin option "mongoDbUrl" must be present and be a non-empty string.');
     }
 };
 class persistentQueue extends erela_js_1.Plugin {
@@ -31,14 +31,15 @@ class persistentQueue extends erela_js_1.Plugin {
     }
     load(manager) {
         this.manager = manager;
-        this.manager.on('nodeRaw', (payload) => {
+        this.manager
+            .on("nodeRaw", (payload) => {
             if (payload.op === "playerUpdate") {
                 delete payload.op;
                 const player = this.manager.players.get(payload.guildId);
                 if (player) {
-                    const collection = this.Db.collection('persistentQueue');
+                    const collection = this.Db.collection("persistentQueue");
                     collection.updateOne({
-                        id: player.guild
+                        id: player.guild,
                     }, {
                         $set: {
                             queue: player.queue,
@@ -49,49 +50,67 @@ class persistentQueue extends erela_js_1.Plugin {
                             voiceChannel: player.voiceChannel,
                             voiceState: player.voiceState,
                             volume: player.volume,
-                            position: payload.state.position || 0
-                        }
+                            position: payload.state.position || 0,
+                        },
                     }, {
-                        upsert: true
+                        upsert: true,
                     });
                     player.position = payload.state.position || 0;
                 }
             }
-        }).on('playerDestroy', (player) => {
-            const collection = this.Db.collection('persistentQueue');
+        })
+            .on("playerDestroy", (player) => {
+            const collection = this.Db.collection("persistentQueue");
             collection.deleteOne({ id: player.guild });
-        }).on('queueEnd', (player) => {
-            const collection = this.Db.collection('persistentQueue');
+        })
+            .on("queueEnd", (player) => {
+            const collection = this.Db.collection("persistentQueue");
             collection.updateOne({
-                id: player.guild
+                id: player.guild,
             }, {
                 $set: {
                     queue: player.queue,
                     current: player.queue.current,
-                    position: 0
-                }
+                    position: 0,
+                },
             }, {
-                upsert: true
+                upsert: true,
             });
         });
-        this.client.once('ready', (client) => __awaiter(this, void 0, void 0, function* () {
+        // @ts-ignore
+        this.client.once("ready", (client) => __awaiter(this, void 0, void 0, function* () {
             var _a;
             yield this.delay((_a = this.options.delay) !== null && _a !== void 0 ? _a : 2000);
-            const database = yield this.Db.collection('persistentQueue').find({}).toArray();
-            database.forEach(db => {
+            const database = (yield this.Db.collection("persistentQueue")
+                .find({})
+                .toArray());
+            database.forEach((db) => {
                 var _a;
-                if (!db.voiceChannel || !db.textChannel || !db.id || !db.current || !client.channels.cache.get(db.voiceChannel) || !client.channels.cache.get(db.textChannel))
+                if (!db.voiceChannel ||
+                    !db.textChannel ||
+                    !db.id ||
+                    !db.current ||
+                    !client.channels.cache.get(db.voiceChannel) ||
+                    !client.channels.cache.get(db.textChannel))
                     return;
                 const player = this.manager.create({
                     voiceChannel: db.voiceChannel,
                     textChannel: db.textChannel,
-                    guild: db.id
+                    guild: db.id,
                 });
                 player.connect();
                 if (db.current)
-                    player.queue.add(erela_js_1.TrackUtils.buildUnresolved({ title: db.current.title, author: db.current.author, duration: db.current.duration }, new discord_js_1.User(client, db.current.requester)));
+                    player.queue.add(erela_js_1.TrackUtils.buildUnresolved({
+                        title: db.current.title,
+                        author: db.current.author,
+                        duration: db.current.duration,
+                    }, new discord_js_1.User(client, db.current.requester)));
                 for (let track of db.queue) {
-                    player.queue.add(erela_js_1.TrackUtils.buildUnresolved({ title: track.title, author: track.author, duration: track.duration }, new discord_js_1.User(client, db.current.requester)));
+                    player.queue.add(erela_js_1.TrackUtils.buildUnresolved({
+                        title: track.title,
+                        author: track.author,
+                        duration: track.duration,
+                    }, new discord_js_1.User(client, db.current.requester)));
                 }
                 if (db.trackRepeat)
                     player.setTrackRepeat(true);
@@ -102,7 +121,7 @@ class persistentQueue extends erela_js_1.Plugin {
         }));
     }
     delay(delayInms) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(2);
             }, delayInms);
@@ -113,7 +132,7 @@ class persistentQueue extends erela_js_1.Plugin {
             const client = new mongodb_1.MongoClient(this.options.mongoDbUrl);
             this.clientDb = client;
             yield client.connect();
-            this.Db = client.db(this.options.mongoDbName || 'erelaQueue');
+            this.Db = client.db(this.options.mongoDbName || "erelaQueue");
         });
     }
 }
